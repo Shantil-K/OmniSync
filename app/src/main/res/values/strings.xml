@@ -1,0 +1,3 @@
+<resources>
+    <string name="watcher_desc">Lets OmniSync notice when a synced app (e.g. Samsung Notes) is opened or closed, so it can pull the latest data before you use it and push your edits right after. It does not read screen content.</string>
+</resources>

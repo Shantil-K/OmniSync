@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_sync"
+        android:label="OmniSync"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OmniSync"
+        android:usesCleartextTraffic="true">
+
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".AccountsActivity" android:exported="false" />
+        <activity android:name=".LogActivity" android:exported="false" />
+
+        <!-- Watches which app is in the foreground: pushes when a watched app is
+             closed, pulls (and restarts it) when it is opened with newer cloud data. -->
+        <service
+            android:name=".AppWatcherService"
+            android:exported="false"
+            android:label="OmniSync app watcher"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/watcher" />
+        </service>
+
+        <service
+            android:name=".SyncTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_sync"
+            android:label="Sync now"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- adb / automation entry point. Guarded by DUMP so only shell/system can send. -->
+        <receiver
+            android:name=".CommandReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="dev.omnisync.SYNC" />
+                <action android:name="dev.omnisync.IMPORT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".StartupReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

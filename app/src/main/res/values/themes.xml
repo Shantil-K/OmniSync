@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.OmniSync" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#2F6FDE</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#D9E2FF</item>
+        <item name="colorOnPrimaryContainer">#001946</item>
+    </style>
+</resources>
